@@ -26,5 +26,12 @@ Note right of browser: The browser send my entry to the server
     server-->>browser: application/javascript the JS file
     deactivate server
 
-    Note right of browser: The browser display my last entry below and in the console the array of data is displayed
+  Note right of browser: The browser starts executing the JavaScript code that fetches the JSON from the server
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/data.json
+    activate server
+    server-->>browser: 
+    deactivate server
+
+    Note right of browser: The browser executes the callback function that renders the notes
 
