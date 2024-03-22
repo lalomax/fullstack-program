@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Statistics from "./components/Statistics";
+import Button from "./components/Button";
 
 function App() {
   // guarda los clics de cada botón en su propio estado
@@ -12,11 +13,27 @@ function App() {
 
   return (
     <>
-      <button onClick={() => setGood(good + 1)}>good</button>
-      <button onClick={() => setNeutral(neutral + 1)}>neutral</button>
-      <button onClick={() => setBad(bad + 1)}>bad</button>
+      <Button
+        setBad={setBad}
+        bad={bad}
+        setGood={setGood}
+        good={good}
+        setNeutral={setNeutral}
+        neutral={neutral}
+      />
       <h2>Statistics</h2>
-      <Statistics good={good} neutral={neutral} bad={bad} all={all} average={average} percentageGood={percentageGood} />
+      {all == 0 ? (
+        <p>No feeback given</p>
+      ) : (
+        <Statistics
+          good={good}
+          neutral={neutral}
+          bad={bad}
+          all={all}
+          average={average}
+          percentageGood={percentageGood}
+        />
+      )}
     </>
   );
 }
