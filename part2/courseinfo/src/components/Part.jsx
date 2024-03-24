@@ -1,11 +1,12 @@
 import React from "react";
 
-const Part1 = ({part1, exercises1}) => {
+const Part = ({name, exercises}) => {
+  // console.log("Part Component",key, name,exercises);
   return (
     <p>
-      {part1} {exercises1}
+       {name} {exercises}
     </p>
   );
 };
 
-export default Part1;
+export default Part;

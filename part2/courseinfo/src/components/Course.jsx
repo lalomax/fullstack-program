@@ -5,6 +5,7 @@ import Total from "./Total";
 import React from "react";
 
 const Course = ({course}) => {
+  console.log(course)
   return (
     <div>
       <Header course={course.name} />
