@@ -1,33 +1,40 @@
+import Numbers from "./components/Numbers";
+import AddName from "./components/AddName";
 import { useState } from "react";
 function App() {
-  const [persons, setPersons] = useState([{ name: "Arto Hellas", phoneNumber: "39-44-2322323" }]);
+  const [persons, setPersons] = useState([
+    { name: "Arto Hellas", phoneNumber: "040-123456", id: 1 },
+    { name: "Ada Lovelace", phoneNumber: "39-44-5323523", id: 2 },
+    { name: "Dan Abramov", phoneNumber: "12-43-234345", id: 3 },
+    { name: "Mary Poppendieck", phoneNumber: "39-23-6423122", id: 4 },
+  ]);
   const [newName, setNewName] = useState("");
   const [newPhoneNumber, setNewPhoneNumber] = useState("");
 
   const addName = (event) => {
     event.preventDefault();
-    // check null 
+    // check null
     if (!newName) {
-      alert("Blank is not allowed")
-      return
+      alert("Blank is not allowed");
+      return;
     }
     const newObject = { name: newName, phoneNumber: newPhoneNumber };
-    
+
+    //check if name exists
     const containsName = (obj, list) => {
-      
       let i;
       for (i = 0; i < list.length; i++) {
-          if (list[i].name === obj) {
-              return true;
-          }
+        if (list[i].name === obj) {
+          return true;
+        }
       }
-  
-      return false;
-  }
 
-    
+      return false;
+    };
+
+    // check if name is repeated
     if (containsName(newObject.name, persons)) {
-      alert (`${newObject.name} is already added to phonebook`)
+      alert(`${newObject.name} is already added to phonebook`);
     } else {
       setPersons([...persons, newObject]);
       console.log(persons, newName);
@@ -48,25 +55,14 @@ function App() {
 
   return (
     <>
-      <h2>Phonebook</h2>
-      <form onSubmit={addName}>
-        <div>
-          name: <input value={newName} onChange={handleNameChange} />
-        </div>
-        <div>
-          number: <input value={newPhoneNumber} onChange={handlePhoneNumberChange} />
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-        {/* <div>debug: {newName}</div> */}
-      </form>
-      <h2>Numbers</h2>
-      <ul>
-        {persons.map((person) => (
-          <li>{person.name} {person.phoneNumber}</li>
-        ))}
-      </ul>
+      <AddName
+        addName={addName}
+        newName={newName}
+        newPhoneNumber={newPhoneNumber}
+        handleNameChange={handleNameChange}
+        handlePhoneNumberChange={handlePhoneNumberChange}
+      />
+      <Numbers persons={persons} />
     </>
   );
 }
