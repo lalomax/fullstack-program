@@ -5,10 +5,28 @@ function App() {
 
   const addName = (event) => {
     event.preventDefault();
+    const newObject = { name: newName };
+    
+    const containsName = (obj, list) => {
+      
+      let i;
+      for (i = 0; i < list.length; i++) {
+          if (list[i].name === obj) {
+              return true;
+          }
+      }
+  
+      return false;
+  }
 
-    setPersons([...persons, { name: newName }]);
-    console.log(persons, newName);
-    setNewName("");
+    
+    if (containsName(newObject.name, persons)) {
+      alert (`${newObject.name} is already added to phonebook`)
+    } else {
+      setPersons([...persons, newObject]);
+      console.log(persons, newName);
+      setNewName("");
+    }
   };
 
   const handleNameChange = (event) => {
