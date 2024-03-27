@@ -1,5 +1,6 @@
 import Numbers from "./components/Numbers";
 import AddName from "./components/AddName";
+import Filter from "./components/Filter";
 import { useState } from "react";
 function App() {
   const [persons, setPersons] = useState([
@@ -71,9 +72,8 @@ function App() {
   return (
     <>
       <h2>Phonebook</h2>
-      <div>
-        filter shown with <input value={filter} onChange={handleFilterChange} />
-      </div>
+      <Filter filter={filter} handleFilterChange={handleFilterChange} />
+      <h2>add a new</h2>
       <AddName
         addName={addName}
         newName={newName}
@@ -81,6 +81,7 @@ function App() {
         handleNameChange={handleNameChange}
         handlePhoneNumberChange={handlePhoneNumberChange}
       />
+      <h2>Numbers</h2>
       <Numbers namesToShow={namesToShow} />
     </>
   );
