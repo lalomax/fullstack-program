@@ -1,11 +1,12 @@
 import React from "react";
 
-const Numbers = ({persons}) => {
+const Numbers = ({namesToShow}) => {
+  console.log(namesToShow)
   return (
     <div>
       <h2>Numbers</h2>
       <ul>
-        {persons.map((person) => (
+        {namesToShow.map((person) => (
           <li key={person.name}>
             {person.name} {person.phoneNumber}
           </li>

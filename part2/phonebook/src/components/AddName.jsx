@@ -1,9 +1,15 @@
 import React from "react";
 
-const AddName = ({addName, newName, newPhoneNumber, handleNameChange, handlePhoneNumberChange}) => {
+const AddName = ({
+  addName,
+  newName,
+  newPhoneNumber,
+  handleNameChange,
+  handlePhoneNumberChange,
+}) => {
   return (
     <div>
-      <h2>Phonebook</h2>
+      <h2>add a new</h2>
       <form onSubmit={addName}>
         <div>
           name: <input value={newName} onChange={handleNameChange} />
@@ -16,7 +22,6 @@ const AddName = ({addName, newName, newPhoneNumber, handleNameChange, handlePhon
           <button type="submit">add</button>
         </div>
       </form>
-      
     </div>
   );
 };

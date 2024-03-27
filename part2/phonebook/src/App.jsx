@@ -10,7 +10,22 @@ function App() {
   ]);
   const [newName, setNewName] = useState("");
   const [newPhoneNumber, setNewPhoneNumber] = useState("");
+  const [filter, setFilter] = useState("");
+  
 
+  // function handle filter change
+  const handleFilterChange = (event) => {
+    console.log(event.target.value);
+    setFilter(event.target.value);
+
+  };
+
+  // names to show
+  const namesToShow = !filter ? persons : persons.filter (el => {
+    if (el.name.toUpperCase().includes(filter.toUpperCase())) return el
+  });
+
+  // function add name
   const addName = (event) => {
     event.preventDefault();
     // check null
@@ -55,6 +70,10 @@ function App() {
 
   return (
     <>
+      <h2>Phonebook</h2>
+      <div>
+        filter shown with <input value={filter} onChange={handleFilterChange} />
+      </div>
       <AddName
         addName={addName}
         newName={newName}
@@ -62,7 +81,7 @@ function App() {
         handleNameChange={handleNameChange}
         handlePhoneNumberChange={handlePhoneNumberChange}
       />
-      <Numbers persons={persons} />
+      <Numbers namesToShow={namesToShow} />
     </>
   );
 }
