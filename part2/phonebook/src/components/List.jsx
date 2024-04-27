@@ -6,8 +6,8 @@ const Numbers = ({ namesToShow }) => {
     <div>
       <ul>
         {namesToShow.map((person) => (
-          <li key={person.name}>
-            {person.name} {person.phoneNumber}
+          <li key={person.id}>
+            {person.name} {person.number}
           </li>
         ))}
       </ul>

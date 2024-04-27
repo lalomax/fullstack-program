@@ -1,4 +1,4 @@
-import Numbers from "./components/Numbers";
+import List from "./components/List";
 import AddName from "./components/AddName";
 import Filter from "./components/Filter";
 import { useState, useEffect } from "react";
@@ -41,7 +41,7 @@ function App() {
       alert("Blank is not allowed");
       return;
     }
-    const newObject = { name: newName, phoneNumber: newPhoneNumber };
+    const newObject = { name: newName, number: newPhoneNumber };
 
     //check if name exists
     const containsName = (obj, list) => {
@@ -89,7 +89,7 @@ function App() {
         handlePhoneNumberChange={handlePhoneNumberChange}
       />
       <h2>Numbers</h2>
-      <Numbers namesToShow={namesToShow} />
+      <List namesToShow={namesToShow} />
     </>
   );
 }
