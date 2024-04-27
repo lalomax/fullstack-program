@@ -2,36 +2,33 @@ import List from "./components/List";
 import AddName from "./components/AddName";
 import Filter from "./components/Filter";
 import { useState, useEffect } from "react";
-import axios from "axios"
+import personService from "./services/persons";
 
 function App() {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
   const [newPhoneNumber, setNewPhoneNumber] = useState("");
   const [filter, setFilter] = useState("");
-  
+
   useEffect(() => {
-    console.log('effect')
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => {
-        console.log('promise fulfilled')
-        setPersons(response.data)
-      })
-  }, [])
-  console.log('render', persons.length, 'notes')
+    personService.getAll().then((initialPersons) => {
+      setPersons(initialPersons);
+    });
+  }, []);
+  console.log("render", persons.length, "notes");
 
   // function handle filter change
   const handleFilterChange = (event) => {
     console.log(event.target.value);
     setFilter(event.target.value);
-
   };
 
   // names to show
-  const namesToShow = !filter ? persons : persons.filter (el => {
-    if (el.name.toUpperCase().includes(filter.toUpperCase())) return el
-  });
+  const namesToShow = !filter
+    ? persons
+    : persons.filter((el) => {
+        if (el.name.toUpperCase().includes(filter.toUpperCase())) return el;
+      });
 
   // function add name
   const addName = (event) => {
@@ -59,10 +56,11 @@ function App() {
     if (containsName(newObject.name, persons)) {
       alert(`${newObject.name} is already added to phonebook`);
     } else {
-      setPersons([...persons, newObject]);
-      console.log(persons, newName);
-      setNewName("");
-      setNewPhoneNumber("");
+      personService.create(newObject).then((returnedNote) => {
+        setPersons(persons.concat(returnedNote));
+        setNewName("");
+        setNewPhoneNumber("");
+      });
     }
   };
 
