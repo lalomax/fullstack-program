@@ -15,6 +15,7 @@ function App() {
       setPersons(initialPersons);
     });
   }, []);
+
   console.log("render", persons.length, "notes");
 
   // function handle filter change
@@ -54,16 +55,51 @@ function App() {
 
     // check if name is repeated
     if (containsName(newObject.name, persons)) {
-      alert(`${newObject.name} is already added to phonebook`);
+      const person = persons.find((n) => n.name === newObject.name);
+      const changedPerson = { ...person, number: newPhoneNumber };
+      if (
+        window.confirm(
+          `${person.name} is already added to phonebook, replace the old number with a new one`
+        )
+      ) {
+        personService
+          .update(person.id, changedPerson)
+          .then((returnedPerson) => {
+            setPersons(
+              persons.map((person) =>
+                person.id !== changedPerson.id ? person : returnedPerson
+              )
+            );
+            setNewName("");
+            setNewPhoneNumber("");
+            
+          });
+      }
     } else {
-      personService.create(newObject).then((returnedNote) => {
-        setPersons(persons.concat(returnedNote));
+      personService.create(newObject).then((returnedPerson) => {
+        setPersons(persons.concat(returnedPerson));
         setNewName("");
         setNewPhoneNumber("");
       });
     }
   };
 
+  const erasePersonOf = (id) => {
+    const person = persons.find((n) => n.id === id);
+    // const changedNote = { ...note, important: !note.important };
+    if (window.confirm(`Do you really want to delete ${person.name}?`)) {
+      personService
+        .erase(id)
+        .then(() => {
+          setPersons(persons.filter((person) => person.id !== id));
+        })
+        .catch((error) => {
+          alert(`the person '${persons.name}' was already deleted from server`);
+        });
+    }
+  };
+
+  console.log(persons);
   const handleNameChange = (event) => {
     // console.log(event.target.value);
     setNewName(event.target.value);
@@ -87,7 +123,14 @@ function App() {
         handlePhoneNumberChange={handlePhoneNumberChange}
       />
       <h2>Numbers</h2>
-      <List namesToShow={namesToShow} />
+
+      {namesToShow.map((person) => (
+        <List
+          key={person.id}
+          person={person}
+          erasePerson={() => erasePersonOf(person.id)}
+        />
+      ))}
     </>
   );
 }

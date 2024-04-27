@@ -1,16 +1,6 @@
 {
   "persons": [
     {
-      "name": "Arto Hellas",
-      "number": "040-123456",
-      "id": "1"
-    },
-    {
-      "name": "Ada Lovelace",
-      "number": "39-44-5323523",
-      "id": "2"
-    },
-    {
       "name": "Dan Abramov",
       "number": "12-43-234345",
       "id": "3"
@@ -21,14 +11,14 @@
       "id": "4"
     },
     {
-      "name": "Orlando Flores",
-      "number": "591-77595073",
-      "id": "5"
+      "id": "c707",
+      "name": "Orlando Huanca",
+      "number": "777"
     },
     {
-      "id": "f1d5",
-      "name": "Orlando Huanca",
-      "number": "4333232"
+      "id": "5590",
+      "name": "Orlando Flores",
+      "number": "123123456"
     }
   ]
 }

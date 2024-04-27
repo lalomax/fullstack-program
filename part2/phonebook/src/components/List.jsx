@@ -1,18 +1,17 @@
 import React from "react";
 
-const Numbers = ({ namesToShow }) => {
-  console.log(namesToShow);
+const List = ({person, erasePerson }) => {
+  
   return (
     <div>
-      <ul>
-        {namesToShow.map((person) => (
-          <li key={person.id}>
-            {person.name} {person.number}
+
+          <li >
+             {person.name} {person.number} <button onClick={erasePerson}> delete </button>
           </li>
-        ))}
-      </ul>
+        
+
     </div>
   );
 };
 
-export default Numbers;
+export default List;
