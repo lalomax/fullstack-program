@@ -3,12 +3,16 @@ import AddName from "./components/AddName";
 import Filter from "./components/Filter";
 import { useState, useEffect } from "react";
 import personService from "./services/persons";
+import ErrorNotification from "./components/ErrorNotification";
+import SucceedNotification from "./components/SucceedNotification";
 
 function App() {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
   const [newPhoneNumber, setNewPhoneNumber] = useState("");
   const [filter, setFilter] = useState("");
+  const [errorMessage, setErrorMessage] = useState(null)
+  const [succeedMessage, setSucceedMessage] = useState(null)
 
   useEffect(() => {
     personService.getAll().then((initialPersons) => {
@@ -70,6 +74,12 @@ function App() {
                 person.id !== changedPerson.id ? person : returnedPerson
               )
             );
+            setSucceedMessage(
+              `Person '${person.name}' number was already updated from server`
+            )
+            setTimeout(() => {
+              setSucceedMessage(null)
+            }, 3000)
             setNewName("");
             setNewPhoneNumber("");
             
@@ -78,6 +88,14 @@ function App() {
     } else {
       personService.create(newObject).then((returnedPerson) => {
         setPersons(persons.concat(returnedPerson));
+        setSucceedMessage(
+          `Person '${returnedPerson.name}' number was already added from server`
+        )
+        setTimeout(() => {
+          setSucceedMessage(null)
+        }, 3000)
+        setNewName("");
+        setNewPhoneNumber("");
         setNewName("");
         setNewPhoneNumber("");
       });
@@ -92,9 +110,17 @@ function App() {
         .erase(id)
         .then(() => {
           setPersons(persons.filter((person) => person.id !== id));
+          
         })
         .catch((error) => {
-          alert(`the person '${persons.name}' was already deleted from server`);
+          setErrorMessage(
+            `Person '${person.name}' number was already deleted from server`
+          )
+          setTimeout(() => {
+            setErrorMessage(null)
+          }, 3000)
+          setPersons(persons.filter(n => n.id !== id))
+          console.log(persons)
         });
     }
   };
@@ -113,8 +139,11 @@ function App() {
   return (
     <>
       <h2>Phonebook</h2>
+      <ErrorNotification message={errorMessage} />
+      <SucceedNotification message={succeedMessage} />
       <Filter filter={filter} handleFilterChange={handleFilterChange} />
       <h2>add a new</h2>
+      
       <AddName
         addName={addName}
         newName={newName}
