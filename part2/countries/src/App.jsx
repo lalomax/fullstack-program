@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Notification from "./components/Notification";
+import Found from "./components/Found";
 
 function App() {
   const [value, setValue] = useState("");
@@ -8,6 +9,7 @@ function App() {
   const [country, setCountry] = useState(null);
   const [found, setFound] = useState(null);
   const [foundCountry, setFoundCountry] = useState(null);
+  const [weather, setWeather] = useState(null);
   const [message, setMessage] = useState(null);
 
   //recover all countries and set it to countries variable
@@ -44,8 +46,11 @@ function App() {
             `https://studies.cs.helsinki.fi/restcountries/api/name/${country}`
           )
           .then((response) => {
-            setFoundCountry(response.data);
-            console.log("found", foundCountry);
+            setFoundCountry(() => response.data);
+            setFound(null);
+            console.log("found countrx", foundCountry);
+
+            return;
           });
       }
 
@@ -55,6 +60,23 @@ function App() {
       }
     }
   }, [country]);
+
+  useEffect(() => {
+    const lat = foundCountry?.latlng[0];
+    const long = foundCountry?.latlng[1];
+
+    console.log(lat, long);
+    axios
+      .get(
+        `https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${long}&appid=${
+          import.meta.env.VITE_WEATHERAPIKEY
+        }`
+      )
+      .then((response) => {
+        setWeather(response.data);
+        console.log("weather y: ", weather);
+      });
+  }, [foundCountry]);
 
   // How many countries to show
   const countriesToShow = !country
@@ -74,30 +96,57 @@ function App() {
     event.preventDefault();
   };
 
+  const showCountry = (country) => {
+    axios
+      .get(`https://studies.cs.helsinki.fi/restcountries/api/name/${country}`)
+      .then((response) => {
+        setFoundCountry(response.data);
+        setFound(null);
+        setValue(country);
+        console.log("found", foundCountry);
+        return;
+      });
+
+    console.log(country);
+  };
+
   return (
     <>
       <form onSubmit={onSearch}>
         find country: <input value={value} onChange={handleChange} />
         <Notification message={message} />
-        {/* <button type="submit">exchange rate</button> */}
       </form>
-      {found && found?.map((el) => <p key={el}>{el}</p>)}
       {foundCountry && (
         <div>
-          <h1>{foundCountry.common}</h1>
+          <h1>{foundCountry.name.common}</h1>
           <p>{foundCountry.capital}</p>
           <p>
-            {foundCountry && `area:`} {foundCountry.area}
+            {`area:`} {foundCountry.area}
           </p>
           {`Languages :`}
           <ul>
-            {Object.values(foundCountry.languages).map((lan) => {
+            {Object.values(foundCountry?.languages).map((lan) => {
               return <li>{lan}</li>;
             })}
           </ul>
           <img src={foundCountry.flags.png} alt={foundCountry.flags.alt} />
+          <h1>Weather in {foundCountry.name.common}</h1>
         </div>
       )}
+      {weather && (
+        <div>
+          <div>temperature : {weather.current.temp}</div>
+          <div>wind : {weather.current.wind_speed} m/s</div>
+        </div>
+      )}
+      {found?.map((country) => {
+        return (
+          <Found
+            country={country}
+            showCountry={() => showCountry(country)}
+          ></Found>
+        );
+      })}
     </>
   );
 }
