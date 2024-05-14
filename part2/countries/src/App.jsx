@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Notification from "./components/Notification";
-import Found from "./components/Found";
+import FoundList from "./components/FoundList";
+import Weather from "./components/Weather";
+import FoundCountry from "./components/FoundCountry";
 
 function App() {
   const [value, setValue] = useState("");
@@ -89,6 +91,7 @@ function App() {
     setValue(event.target.value);
     setFound(null);
     setFoundCountry(null);
+    setWeather(null)
   };
 
   const onSearch = (event) => {
@@ -116,35 +119,14 @@ function App() {
         find country: <input value={value} onChange={handleChange} />
         <Notification message={message} />
       </form>
-      {foundCountry && (
-        <div>
-          <h1>{foundCountry.name.common}</h1>
-          <p>{foundCountry.capital}</p>
-          <p>
-            {`area:`} {foundCountry.area}
-          </p>
-          {`Languages :`}
-          <ul>
-            {Object.values(foundCountry?.languages).map((lan) => {
-              return <li>{lan}</li>;
-            })}
-          </ul>
-          <img src={foundCountry.flags.png} alt={foundCountry.flags.alt} />
-          <h1>Weather in {foundCountry.name.common}</h1>
-        </div>
-      )}
-      {weather && (
-        <div>
-          <div>temperature : {weather.current.temp}</div>
-          <div>wind : {weather.current.wind_speed} m/s</div>
-        </div>
-      )}
+      <FoundCountry foundCountry={foundCountry} />
+      <Weather weather={weather} />
       {found?.map((country) => {
         return (
-          <Found
+          <FoundList
             country={country}
             showCountry={() => showCountry(country)}
-          ></Found>
+          ></FoundList>
         );
       })}
     </>

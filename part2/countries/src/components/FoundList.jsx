@@ -1,4 +1,4 @@
-const Found = ({ country, showCountry }) => {
+const FoundList = ({ country, showCountry }) => {
   if (country === null) {
     return null;
   }
@@ -12,4 +12,4 @@ const Found = ({ country, showCountry }) => {
   );
 };
 
-export default Found;
+export default FoundList;
